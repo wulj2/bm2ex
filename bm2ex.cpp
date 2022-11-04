@@ -83,7 +83,7 @@ void opt_t::do1(bam1_t* b, uint8_t* r){
     uint32_t* oc = bam_get_cigar(b);
     int qpos = 0;
     int rpos = b->core.pos;
-    int opt = 0;
+    uint16_t opt = 0;
     for(uint32_t i = 0; i < b->core.n_cigar; ++i){
         oi = bam_cigar_op(oc[i]);
         ol = bam_cigar_oplen(oc[i]);
@@ -107,11 +107,8 @@ void opt_t::do1(bam1_t* b, uint8_t* r){
             oplen_m = oplen_x = 0;
             nc = add_cigar(nc, &p, &s, ol, BAM_CIGAR_STR[oi]);
             opt = bam_cigar_type(oi);
-            if(opt == 1){
-                qpos += ol;
-            }else if(opt == 2){
-                rpos += ol;
-            }
+            if(opt & 0x1) qpos += ol;
+            if(opt & 0x2) rpos += ol;
         }
     }
     if(oplen_m) nc = add_cigar(nc, &p, &s, oplen_m, '=');
