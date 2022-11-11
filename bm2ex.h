@@ -3,6 +3,7 @@
 
 #include <string>
 #include <unistd.h>
+#include <assert.h>
 #include <libgen.h>
 #include <htslib/hts.h>
 #include <htslib/sam.h>
